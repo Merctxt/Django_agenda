@@ -1,0 +1,77 @@
+<div>
+<header class="header">
+    <h1 class="header-heading">
+        <a href="{% url "contact:index" %}" class="header-link">
+            AGENDA
+        </a>
+    </h1>
+
+    <nav class="menu">
+        <ul class="menu-list">
+            {% if user.is_authenticated %}
+            <li class="menu-item">
+                <a href="{% url "contact:create" %}" class="menu-link">Create</a>
+            </li>
+            <li class="menu-item">
+                <a href="{% url "contact:user_update" %}" class="menu-link">Profile</a>
+            </li>
+            <li class="menu-item">
+                <a href="{% url "contact:logout" %}" class="menu-link">Logout</a>
+            </li>
+            {% else %}
+            <li class="menu-item">
+                <a href="{% url "contact:register" %}" class="menu-link">Register</a>
+            </li>
+            <li class="menu-item">
+                <a href="{% url "contact:login" %}" class="menu-link">Login</a>
+            </li>
+            {% endif %}
+            <button class='button-max' id="theme-toggle">◐</button>
+        </ul>
+        
+    </nav>
+
+    
+
+    <script>
+        // Função para definir o tema
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+            document.cookie = "theme=" + theme + "; path=/";
+        }
+
+        // Função para pegar o valor do cookie
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Pega o tema do cookie ao carregar a página
+        const currentTheme = getCookie('theme') || 'light';
+        setTheme(currentTheme);
+
+        // Adiciona o evento de clique ao botão
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            setTheme(theme);
+        });
+    </script>
+
+    <div class="search">
+        <form action="{% url "contact:search" %}" method="GET">
+            <input type="search"
+             class="search-input"
+              placeholder='Search'
+               id='search'
+               name='q'
+               value='{{ request.GET.q.strip }}'
+               >
+        </form>
+    </div>
+</header>
+</div>
